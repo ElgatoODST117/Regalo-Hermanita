@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regalito de Rivendell</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@1,400&display=swap" rel="stylesheet">
+
+    <style>
+
+
+    @font-face {
+        font-family: 'MiFuenteElfica';
+        src: url('elfico.ttf') format('truetype'); 
+        font-weight: normal;
+        font-style: normal;
+    }
+
+   
+    h1 { 
+        font-family: 'MiFuenteElfica', 'Cinzel', serif; 
+        color: #5d3a1a; 
+        font-size: 3.5rem; 
+        margin: 10px 0; 
+    }
+
+    
+    .texto-elfico-final {
+        font-family: 'MiFuenteElfica', serif;
+        color: #b8860b;
+        font-size: 1.8rem;
+        letter-spacing: 2px;
+    }
+    
+        body {
+            background: #1a0f00 url('https://www.transparenttextures.com/patterns/dark-wood.png');
+            margin: 0;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .pergamino-wrapper {
+            position: relative;
+            width: 95%;
+            max-width: 600px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rollo {
+            width: 102%;
+            height: 50px;
+            background: linear-gradient(to bottom, #8b5a2b 0%, #d4b483 50%, #8b5a2b 100%);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+            z-index: 20;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rollo::before, .rollo::after {
+            content: "";
+            position: absolute;
+            width: 14px;
+            height: 65px;
+            background: #3d2610;
+            top: -8px;
+            border-radius: 3px;
+        }
+        .rollo::before { left: -10px; }
+        .rollo::after { right: -10px; }
+
+        .pergamino-papel {
+            background-color: #e6cfa3;
+            background-image: url('https://www.transparenttextures.com/patterns/paper-fibers.png');
+            max-height: 0px; 
+            width: 92%;
+            overflow: hidden;
+            transition: max-height 2s cubic-bezier(0.4, 0, 0.2, 1), padding 2s;
+            box-shadow: inset 0 0 40px rgba(139, 69, 19, 0.4), 0 0 20px rgba(0,0,0,0.4);
+            text-align: center;
+            padding: 0 20px;
+            z-index: 5;
+            margin: -5px 0;
+        }
+
+        .pergamino-wrapper.abierto .pergamino-papel {
+            max-height: 15000px;
+            padding: 50px 20px;
+        }
+
+        .texto-click {
+            color: #fdf5e6;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px black;
+            animation: latido 2s infinite;
+        }
+
+        h1 { font-family: 'Cinzel', serif; color: #5d3a1a; font-size: 2rem; margin: 10px 0; }
+        .intro-texto { font-family: 'Lora', serif; font-style: italic; color: #4a3423; margin-bottom: 25px; }
+
+        .boton-sello {
+            width: 85px; height: 85px;
+            background: #8b0000; color: #f2e3c9;
+            border: 3px double #b8860b; border-radius: 50%;
+            font-family: 'Cinzel', serif; font-size: 0.7rem;
+            cursor: pointer; margin: 10px auto 30px;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .foto-recuerdo {
+            background: #fdfdfd;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 8px 12px 20px rgba(0,0,0,0.3);
+            max-width: 85%;
+            margin: 40px auto;
+            border: 1px solid #eee;
+        }
+        .foto-recuerdo img { width: 100%; height: auto; display: block; filter: sepia(10%); }
+        .frase-foto { margin-top: 15px; font-family: 'Lora', serif; color: #2f4f4f; font-size: 1rem; line-height: 1.4; }
+
+        
+        .firma-digital {
+            width: 180px;
+            height: auto;
+            margin: 30px auto 10px;
+            mix-blend-mode: multiply; 
+            filter: sepia(100%) saturate(200%) brightness(50%); 
+        }
+
+        .hoja { position: fixed; top: -20px; z-index: 100; pointer-events: none; animation: caer linear forwards; }
+        @keyframes latido { 0%, 100% { opacity: 0.8; } 50% { opacity: 0.3; } }
+        @keyframes caer { to { transform: translateY(105vh) rotate(540deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <audio id="sonidoAbrir">
+        <source src="Pergamino.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="pergamino-wrapper" id="wrapper" onclick="abrirPergamino()">
+        
+        <div class="rollo">
+            <span class="texto-click" id="instruccion">TOCA PARA ABRIR</span>
+        </div>
+
+        <div class="pergamino-papel">
+            <img src="Gondor.png" alt="Árbol" style="width: 150px; opacity: 0.15; margin-bottom: 10px;">
+            
+            <h1>Feliz Cumpleaños, Hermanita</h1>
+            <p class="intro-texto">Primero que nada... me gustaria decirte que espero que hoy tengas un hermoso dia, que te la pases muy bonito.
+                Espero poder estar contigo hoy en este dia tan especial tanto como para ti como para mi. <3 <br>
+                
+                En este pergamino quise demostrarte todo lo que has sido para mi en estos meses que llevo conociendote, los momentos que tuvimos, las experiencias y sentimientos que yo e obtenido a tu lado, como mi hermanita querida. </p>
+
+            <audio id="musicaRivendell" loop>
+    <source src="In Dreams.mp3" type="audio/mpeg">
+</audio>
+
+            <button onclick="controlarMusica(event)" class="boton-sello" id="btnSello">
+                Toca<br>El sonido<br>De un recuerdo
+            </button>
+
+            <div class="foto-recuerdo" style="transform: rotate(-1.5deg);"><img src="Fotos-Hermanita/Foto1.jpg"><p class="frase-foto">Jamás imagine que al entrar por un portal en el oxxo me encontraría con una persona tan maravillosa como lo es usted. Y menos que se convertiría en mi hermanita; lo digo de verdad cuando digo que la quiero como si fuera mi hermana de verdad.
+</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(2deg);"><img src="Fotos-Hermanita/Foto2.jpg"><p class="frase-foto">Este momento donde nos quedamos por primera vez a solas... no se si fue por que acabábamos de salir del mapa de terror o por la situación pero, estaba un poco nervioso y me ayudaste a calmarme, compartimos gustos musicales y fue cuando sentí una conexión especial con usted. Sentí que por fin encontré a alguien en quien podría confiar mucho.
+</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(-2.5deg);"><img src="Fotos-Hermanita/Foto3.jpg"><p class="frase-foto">Nuestros momentos donde hemos demostrado nuestros gustos finos como Star Wars, El señor de los anillos, doramas... cuando culturizamos a Kiwi. Aprecio los momentos que hemos pasado en grupo. Y usted es el alma principal de ese grupo, la que nos une con tu actitud tan carismática que tienes.
+</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(1.5deg);"><img src="Fotos-Hermanita/Foto4.jpg"><p class="frase-foto">Gracias por esos momentos de chill donde yo personalmente sentía que el tiempo pasaba muy lento, valoro el tiempo cuando estoy con usted a solas... siento que puedo ser yo mismo, me gusta pensar que usted al igual que yo, pueda contar cosas que no le contaría a las demás personas. Ayudarte y escucharte aunque sea en lo mas mínimo.</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(-1deg);"><img src="Fotos-Hermanita/Foto5.jpg"><p class="frase-foto">Los mundos que hemos llegado a conocer juntos, los de terror, puzles, chill, no importa que sean mundos ficticios, a mi me generaron muchos momentos divertidos y lo mas importante es que esos momentos son reales para mi. Espero algún día llegar a explorar algún lugar juntos en la vida real.</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(3deg);"><img src="Fotos-Hermanita/Foto6.jpg"><p class="frase-foto">Gracias por todas las veces que te has preocupado por mi, aunque parezca exageración usted a sido la primera persona en escucharme en toda mi vida, puede que eso haya sido mi culpa... nunca e sido de expresar lo que siento, curiosamente con usted siento que puedo contarle todo. Pido perdón por todos los momentos en los que no me quiero ir a dormir y en los que me e puesto a llorar, debo de parecer que soy un llorón jsjs
+Simplemente, gracias por estar a mi lado en los momentos donde nunca antes había estado acompañado.</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(-2deg);"><img src="Fotos-Hermanita/Foto7.jpg"><p class="frase-foto">Mi hermana hecha camarón JKSJSK</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(2.5deg);"><img src="Fotos-Hermanita/Foto9.jpg"><p class="frase-foto">Entre tantas personas que hemos visto juntos, siempre logras destacar... más que nada por la buena personalidad que tienes. Tu amabilidad, madurez, lo atenta y comprensiva que puedes ser, lo divertida que eres, tu gran paciencia que he visto que tienes también. En general, eres una persona muy bonita la cual, a mi parecer, te hace una persona como ninguna otra. No por nada eres mi hermanita, tanto como yo y usted somos perfectos. :3</p></div>
+            <div class="foto-recuerdo" style="transform: rotate(-1.5deg);"><img src="Fotos-Hermanita/Foto8.jpg"><p class="frase-foto">Espero que de verdad seas muy feliz, hermanita.
+también espero haberte hecho aunque sea un poco feliz con todo este regalo... que se que no es mucho, pero quise darme el tiempo para poder darte este detallito, para recordarte lo especial que eres para mi. </p></div>
+            
+            <div class="foto-recuerdo" style="transform: rotate(0deg); border: 2px solid #b8860b;">
+                <img src="Fotos-Hermanita/Foto10.jpeg">
+                <p class="frase-foto" style="font-weight: bold; color: #8b0000;">Espero que, aunque en los próximos meses tal vez no estemos tan presentes por temas de horarios, podamos seguir estando juntos de vez en cuando.<br><br>
+
+Quiero... y si me lo permites, seguir a tu lado el máximo tiempo que se nos permita. Como dije anteriormente, me has ayudado demasiado; incluso aunque a lo mejor sientas que no hayas hecho nada, me cambiaste mi vida por completo.<br><br>
+
+Me has escuchado y te has preocupado por mí; me diste una meta de vida la cual quiero cumplir, y pienso hacerla. <br><br>
+
+Algún día... quisiera poder llegar a tu país, darte un abrazo, presentarte a mi novia y que compartamos más momentos juntos. Quiero hacerte tan feliz como tú lo haces conmigo.<br><br>
+
+Te quiero mucho, mi pequeña hermanita. <3</p>
+            </div>
+<div style="margin: 40px auto; padding: 20px; border: 2px dashed rgba(184, 134, 11, 0.4); border-radius: 10px; background: rgba(255, 255, 255, 0.1); max-width: 85%;">
+    <p style="font-family: 'Cinzel', serif; color: #8b4513; font-size: 1.2rem; margin-bottom: 15px;">
+        Regalito adicional
+    </p>
+    
+    <p style="font-family: 'Lora', serif; font-size: 0.95rem; color: #4a3423; line-height: 1.6;">
+        Me imagino que para cuando veas esto ya habras visto que te llegaron unos juegos, te compre tres juegos y un programa para que puedas poner fondos de pantalla animados en tu pc :3 <br> El paquete del señor de los anillos viene con los dos jueguitos con sus dlc, y el Star Wars es el inicio de una historia, tengo pendiente darte el segundo juego JKSJS <br> Espero que si te gusten mucho, y pases buenos momentos jugandolos cuando no estemos juntos.
+    </p>
+
+
+
+</div>
+            <div style="margin-top: 60px; padding-bottom: 30px;">
+                <p style="font-family: 'Cinzel'; color: #b8860b; font-size: 1.1rem; letter-spacing: 3px;">
+                     Gi melin pân thar i ‘estel gîn, hên vuin.
+                </p>
+                
+                <img src="Firma2.png" alt="Tu firma" class="firma-digital">
+                
+                <p style="font-family: 'Lora'; font-style: italic; color: #5d3a1a; font-size: 0.8rem; margin-top: 5px;">
+                    De parte de: tu hermanito, desde el corazón de Imladris.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="rollo"></div>
+    </div>
+
+    <script>
+        function abrirPergamino() {
+            const wrapper = document.getElementById('wrapper');
+            const inst = document.getElementById('instruccion');
+            const sonido = document.getElementById('sonidoAbrir');
+            
+            
+            if(!wrapper.classList.contains('abierto')) {
+                sonido.play();
+            }
+
+            wrapper.classList.toggle('abierto');
+            inst.style.display = wrapper.classList.contains('abierto') ? "none" : "block";
+        }
+
+        function controlarMusica(e) {
+            e.stopPropagation(); 
+            var audio = document.getElementById("musicaRivendell");
+            var btn = document.getElementById("btnSello");
+            if (audio.paused) { audio.play(); btn.innerHTML = "PAUSA"; }
+            else { audio.pause(); btn.innerHTML = "TOCA<br>EL SONIDO<br>DE UN RECUERDO"; }
+        }
+
+        function crearHoja() {
+            const h = document.createElement('div');
+            h.className = 'hoja';
+            h.innerHTML = '🍃';
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.fontSize = Math.random() * 15 + 10 + 'px';
+            h.style.animationDuration = Math.random() * 3 + 5 + 's';
+            document.body.appendChild(h);
+            setTimeout(() => { h.remove(); }, 8000);
+        }
+        setInterval(crearHoja, 600);
+    </script>
+</body>
+</html>
